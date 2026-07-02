@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTheme } from '../context/ThemeContext'
 
 const THEMES = [
+  { value: 'space',     label: 'Space'     },
   { value: 'meliora',   label: 'Meliora'   },
   { value: 'hail-mary', label: 'Hail Mary' },
   { value: 'legacy',    label: 'Legacy'    },

@@ -7,6 +7,8 @@ import MelioraRays from './Components/MelioraRays'
 import MelioraZeppelins from './Components/MelioraZeppelins'
 import LegacyEffects from './Components/LegacyEffects'
 import LightCycles from './Components/LightCycles'
+import SpaceStars from './Components/SpaceStars'
+import ShootingStars from './Components/ShootingStars'
 import Navbar from './Components/Navbar'
 import Home from './Components/Home'
 import InfoMode from './Components/InfoMode'
@@ -21,6 +23,8 @@ function App() {
         <MelioraRays />
         <MelioraZeppelins />
         <LightCycles />
+        <SpaceStars />
+        <ShootingStars />
         <div className="vignette" />
         <LegacyEffects />
         <ThemeDropdown />

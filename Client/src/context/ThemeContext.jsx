@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from 'react'
 const ThemeContext = createContext()
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('meliora')
+  const [theme, setTheme] = useState('space')
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)

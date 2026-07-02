@@ -1,7 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400&family=Inter:wght@300;400;500&family=Orbitron:wght@600;700&family=Rajdhani:wght@400;500;600&display=swap');
 
-/* ── Meliora palette ──────────────────────────────────── */
+/* ── Space palette (default) ──────────────────────────── */
 :root {
+  --bg-base:         #020204;
+  --bg-surface:      #07070f;
+  --bg-raised:       #0e0e1e;
+  --gold:            #9db4ff;
+  --gold-dim:        #6672b8;
+  --gold-bright:     #c9d6ff;
+  --cream:           #e8ecfb;
+  --cream-muted:     #7a82a4;
+  --rust:            #ff6ec7;
+  --border:          rgba(157, 180, 255, 0.12);
+  --border-gold:     rgba(157, 180, 255, 0.28);
+  --bg-green:        #040409;
+  --bg-green-raised: #080814;
+  --border-green:    rgba(157, 180, 255, 0.14);
+}
+
+/* ── Space overrides ───────────────────────────────────── */
+[data-theme="space"] body {
+  background-image:
+    radial-gradient(ellipse 60% 50% at 20% 15%, rgba(130, 80, 220, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 60% at 80% 85%, rgba(40, 90, 220, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 60% 30%, rgba(255, 70, 180, 0.03) 0%, transparent 65%);
+}
+
+[data-theme="space"] h1,
+[data-theme="space"] h2,
+[data-theme="space"] h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 10px rgba(157, 180, 255, 0.45), 0 0 26px rgba(157, 180, 255, 0.15);
+}
+
+[data-theme="space"] .navbar {
+  background-color: rgba(4, 4, 10, 0.95);
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="space"] .mode-card:hover {
+  box-shadow: 0 0 20px rgba(157, 180, 255, 0.28), inset 0 0 14px rgba(157, 180, 255, 0.08);
+}
+
+[data-theme="space"] .fun-card:hover {
+  box-shadow: 0 0 24px rgba(157, 180, 255, 0.3), 0 0 48px rgba(255, 110, 199, 0.15);
+}
+
+[data-theme="space"] .home-box,
+[data-theme="space"] .content-box {
+  box-shadow: 0 0 60px rgba(157, 180, 255, 0.1), inset 0 0 40px rgba(10, 10, 30, 0.5);
+}
+
+/* ── Meliora palette ──────────────────────────────────── */
+[data-theme="meliora"] {
   --bg-base:       #0b0b0b;
   --bg-surface:    #161616;
   --bg-raised:     #222222;
@@ -666,7 +719,8 @@ a {
 }
 
 [data-theme="hail-mary"] .vignette,
-[data-theme="legacy"] .vignette {
+[data-theme="legacy"] .vignette,
+[data-theme="space"] .vignette {
   background: radial-gradient(
     ellipse 85% 80% at 50% 50%,
     transparent 52%,
@@ -711,6 +765,92 @@ a {
   0%   { opacity: 1;   transform: scale(1);   }
   50%  { opacity: 0.1; transform: scale(0.6); }
   100% { opacity: 0.8; transform: scale(1.2); }
+}
+
+/* ── Star field (Space) ────────────────────────────────── */
+.star-field {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* far layer — smallest, dimmest, near-static */
+.star-far {
+  background: #e8ecfb;
+  animation: star-twinkle-far ease-in-out infinite alternate;
+}
+
+.star-far:nth-child(6n) { background: #7a82a4; }
+
+/* mid layer — medium size/brightness */
+.star-mid {
+  background: #ffffff;
+  box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.4);
+  animation: star-twinkle-mid ease-in-out infinite alternate;
+}
+
+.star-mid:nth-child(7n) { background: #9db4ff; box-shadow: 0 0 3px 1px rgba(157, 180, 255, 0.4); }
+
+/* near layer — largest, brightest, most movement */
+.star-near {
+  background: #ffffff;
+  box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.6);
+  animation: star-twinkle-near ease-in-out infinite alternate;
+}
+
+.star-near:nth-child(11n) { background: #ff6ec7; box-shadow: 0 0 6px 1px rgba(255, 110, 199, 0.5); }
+
+@keyframes star-twinkle-far {
+  0%   { opacity: 0.1; transform: scale(0.8); }
+  50%  { opacity: 0.4; transform: scale(1);   }
+  100% { opacity: 0.15; transform: scale(0.9); }
+}
+
+@keyframes star-twinkle-mid {
+  0%   { opacity: 0.3; transform: scale(0.85); }
+  50%  { opacity: 0.75; transform: scale(1.05); }
+  100% { opacity: 0.4; transform: scale(0.95); }
+}
+
+@keyframes star-twinkle-near {
+  0%   { opacity: 0.55; transform: scale(0.9); }
+  50%  { opacity: 1;    transform: scale(1.15); }
+  100% { opacity: 0.6;  transform: scale(1);   }
+}
+
+/* ── Shooting stars (Space) ───────────────────────────── */
+.shooting-star {
+  position: fixed;
+  top: 0;
+  left: -10%;
+  width: 140px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transform-origin: left center;
+}
+
+.shoot-a { top: 10%; animation: shoot 9s  linear -1.5s infinite; }
+.shoot-b { top: 32%; animation: shoot 12s linear -6s   infinite; }
+.shoot-c { top: 52%; animation: shoot 10s linear -3.8s infinite; }
+
+@keyframes shoot {
+  0%   { opacity: 0; transform: translate(0, 0)          rotate(20deg) scaleX(0.4); }
+  2%   { opacity: 1; }
+  11%  { opacity: 1; transform: translate(58vw, 26vh)     rotate(20deg) scaleX(1);   }
+  16%  { opacity: 0; transform: translate(70vw, 32vh)     rotate(20deg) scaleX(1);   }
+  100% { opacity: 0; transform: translate(70vw, 32vh)     rotate(20deg) scaleX(1);   }
 }
 
 /* ── Theme dropdown ───────────────────────────────────── */
