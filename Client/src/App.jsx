@@ -10,6 +10,8 @@ import LightCycles from './Components/LightCycles'
 import SpaceStars from './Components/SpaceStars'
 import ShootingStars from './Components/ShootingStars'
 import AmbientAudio from './Components/AmbientAudio'
+import RestartButton from './Components/RestartButton'
+import CursorFluid from './Components/CursorFluid'
 import Navbar from './Components/Navbar'
 import Home from './Components/Home'
 import InfoMode from './Components/InfoMode'
@@ -28,6 +30,8 @@ function App() {
         <ShootingStars />
         <div className="vignette" />
         <LegacyEffects />
+        <CursorFluid />
+        <RestartButton />
         <div className="ui-controls">
           <AmbientAudio />
           <ThemeDropdown />
