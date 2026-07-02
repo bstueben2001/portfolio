@@ -9,6 +9,7 @@ import LegacyEffects from './Components/LegacyEffects'
 import LightCycles from './Components/LightCycles'
 import SpaceStars from './Components/SpaceStars'
 import ShootingStars from './Components/ShootingStars'
+import AmbientAudio from './Components/AmbientAudio'
 import Navbar from './Components/Navbar'
 import Home from './Components/Home'
 import InfoMode from './Components/InfoMode'
@@ -27,7 +28,10 @@ function App() {
         <ShootingStars />
         <div className="vignette" />
         <LegacyEffects />
-        <ThemeDropdown />
+        <div className="ui-controls">
+          <AmbientAudio />
+          <ThemeDropdown />
+        </div>
         <div className="app-content">
           <Routes>
             <Route path="/" element={<Home />} />

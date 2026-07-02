@@ -44,8 +44,8 @@ function Home() {
   return (
     <div className="home">
       <div className="home-box">
-      <h1>Welcome to My Portfolio</h1>
-      <p>How would you like to explore?</p>
+      <h1>welcome to my portfolio</h1>
+      <p>how would you like to explore?</p>
       <div className="home-cards">
 
         <div className="mode-card info-card" onClick={() => navigate('/info')}>
