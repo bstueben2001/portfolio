@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTheme } from '../context/ThemeContext'
 import spaceAmbience from '../assets/audio/space-ambience.mp3'
+import melioraAmbience from '../assets/audio/melioraAmbience.mp3'
+import hailMaryAmbience from '../assets/audio/hailMaryAmbiance.mp3'
+import legacyAmbience from '../assets/audio/tronLegacyAmbience.mp3'
 
 const TRACKS = {
   space: spaceAmbience,
+  meliora: melioraAmbience,
+  'hail-mary': hailMaryAmbience,
+  legacy: legacyAmbience,
 }
 
 function AmbientAudio() {

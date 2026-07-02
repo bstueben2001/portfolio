@@ -5,6 +5,7 @@ import SparkleBackground from './Components/SparkleBackground'
 import RockyRolling from './Components/RockyRolling'
 import MelioraRays from './Components/MelioraRays'
 import MelioraZeppelins from './Components/MelioraZeppelins'
+import MelioraSmoke from './Components/MelioraSmoke'
 import LegacyEffects from './Components/LegacyEffects'
 import LightCycles from './Components/LightCycles'
 import SpaceStars from './Components/SpaceStars'
@@ -25,6 +26,7 @@ function App() {
         <RockyRolling />
         <MelioraRays />
         <MelioraZeppelins />
+        <MelioraSmoke />
         <LightCycles />
         <SpaceStars />
         <ShootingStars />

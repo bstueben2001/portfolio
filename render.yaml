@@ -1,0 +1,11 @@
+services:
+  - name: brendon-stueben-portfolio
+    type: web
+    runtime: static
+    rootDir: Client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /**
+        destination: /index.html

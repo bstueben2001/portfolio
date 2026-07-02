@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400&family=Inter:wght@300;400;500&family=Orbitron:wght@600;700&family=Rajdhani:wght@400;500;600&family=Exo+2:wght@200;300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400&family=Inter:wght@300;400;500&family=Orbitron:wght@600;700&family=Rajdhani:wght@400;500;600&family=Exo+2:wght@200;300&family=Cormorant:wght@300;400;500&display=swap');
 
 /* ── Space palette (default) ──────────────────────────── */
 :root {
@@ -41,24 +41,8 @@
   backdrop-filter: blur(8px);
 }
 
-[data-theme="space"] .mode-card {
-  background-color: rgba(7, 7, 15, 0.82);
-}
-
 [data-theme="space"] .mode-card:hover {
   box-shadow: 0 0 20px rgba(157, 180, 255, 0.28), inset 0 0 14px rgba(157, 180, 255, 0.08);
-}
-
-[data-theme="space"] .info-card:hover {
-  background-color: rgba(14, 14, 30, 0.82);
-}
-
-[data-theme="space"] .fun-card::after {
-  background-color: rgba(7, 7, 15, 0.82);
-}
-
-[data-theme="space"] .fun-card:hover::after {
-  background-color: rgba(14, 14, 30, 0.82);
 }
 
 [data-theme="space"] .fun-card:hover {
@@ -91,7 +75,21 @@
 
 /* ── Meliora body glow ────────────────────────────────── */
 [data-theme="meliora"] body {
-  background-image: radial-gradient(ellipse 80% 70% at 50% 42%, #1a2e25 0%, #111e18 45%, #0b0b0b 72%);
+  background-image:
+    radial-gradient(ellipse 80% 70% at 50% 42%, #1a2e25 0%, #111e18 45%, #0b0b0b 72%),
+    radial-gradient(ellipse 55% 45% at 78% 68%, rgba(20, 110, 110, 0.09) 0%, transparent 70%);
+}
+
+[data-theme="meliora"] h1,
+[data-theme="meliora"] h2,
+[data-theme="meliora"] h3 {
+  font-family: 'Cormorant', serif;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+}
+
+[data-theme="meliora"] h2 {
+  color: var(--cream);
 }
 
 /* ── Hail Mary palette (crudStore space theme) ────────── */
@@ -129,6 +127,10 @@
   letter-spacing: 0.05em;
 }
 
+[data-theme="hail-mary"] h1 {
+  color: #f4f1ea;
+}
+
 [data-theme="hail-mary"] .navbar {
   background-color: rgba(13, 27, 46, 0.95);
   backdrop-filter: blur(8px);
@@ -153,30 +155,138 @@
   box-shadow: 0 0 20px rgba(245, 114, 10, 0.22), inset 0 0 12px rgba(245, 114, 10, 0.06);
 }
 
+[data-theme="hail-mary"] .fun-card:hover {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.25), inset 0 0 12px rgba(255, 255, 255, 0.08);
+}
+
 [data-theme="hail-mary"] .home-box,
 [data-theme="hail-mary"] .content-box {
   border-radius: 4px;
-  box-shadow: 0 0 60px rgba(245, 114, 10, 0.08), inset 0 0 40px rgba(9, 20, 34, 0.5);
+  box-shadow: 0 0 60px rgba(224, 32, 24, 0.12), inset 0 0 40px rgba(9, 20, 34, 0.5);
 }
 
 /* ── Rocky rolling (Hail Mary) ────────────────────────── */
-.rocky-rolling {
+/* position (translateX) and spin (rotate) are split across two nested
+   elements so the speech bubble — a child of the non-rotating wrapper —
+   never inherits Rocky's current tumble angle */
+.rocky-rolling-wrap {
   position: fixed;
   bottom: -25px;
   left: 0;
   width: 200px;
   height: 200px;
-  object-fit: contain;
-  pointer-events: none;
   z-index: 2;
-  opacity: 0.35;
-  filter: grayscale(100%) brightness(0.7);
-  animation: rocky-roll 14s linear infinite;
+  pointer-events: auto;
+  animation: rocky-roll-position 14s linear infinite;
 }
 
-@keyframes rocky-roll {
-  from { transform: translateX(-180px) rotate(0deg); }
-  to   { transform: translateX(calc(100vw + 180px)) rotate(1260deg); }
+.rocky-rolling-wrap.is-paused {
+  animation-play-state: paused;
+}
+
+.rocky-rolling-wrap.is-paused .rocky-rolling-spin {
+  animation-play-state: paused;
+}
+
+.rocky-rolling-spin {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: rocky-roll-spin 14s linear infinite;
+}
+
+.rocky-rolling {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.35;
+  filter: grayscale(100%) brightness(0.7);
+  transition: opacity 0.2s, filter 0.2s;
+}
+
+.rocky-rolling-wrap:hover .rocky-rolling {
+  opacity: 0.6;
+  filter: grayscale(60%) brightness(0.9);
+}
+
+.rocky-shake {
+  animation: rocky-shake 1s ease-in-out;
+}
+
+@keyframes rocky-roll-position {
+  from { transform: translateX(-180px); }
+  to   { transform: translateX(calc(100vw + 180px)); }
+}
+
+@keyframes rocky-roll-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(1260deg); }
+}
+
+@keyframes rocky-shake {
+  0%, 100% { transform: translateX(0)   rotate(0deg);   }
+  10%      { transform: translateX(-4px) rotate(-3deg); }
+  20%      { transform: translateX(4px)  rotate(3deg);  }
+  30%      { transform: translateX(-4px) rotate(-2deg); }
+  40%      { transform: translateX(4px)  rotate(2deg);  }
+  50%      { transform: translateX(-3px) rotate(-2deg); }
+  60%      { transform: translateX(3px)  rotate(2deg);  }
+  70%      { transform: translateX(-2px) rotate(-1deg); }
+  80%      { transform: translateX(2px)  rotate(1deg);  }
+  90%      { transform: translateX(-1px) rotate(0deg);  }
+}
+
+/* ── Rocky speech bubble ───────────────────────────────── */
+.rocky-speech-bubble {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 14px;
+  background-color: whitesmoke;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  color: #333333;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 0.6rem 1rem;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: rocky-bubble-in 0.25s ease forwards;
+}
+
+.rocky-speech-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid whitesmoke;
+}
+
+.rocky-speech-bubble::before {
+  content: '';
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 11px solid #cccccc;
+  z-index: -1;
+}
+
+@keyframes rocky-bubble-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0);   }
 }
 
 /* ── Legacy palette (TRON: Legacy) ───────────────────── */
@@ -371,6 +481,7 @@ a {
   justify-content: center;
   min-height: 100vh;
   padding: 2rem;
+  overflow: hidden;
 }
 
 .home-box {
@@ -516,6 +627,50 @@ a {
   animation: star-pop var(--duration) ease-out var(--delay) forwards;
 }
 
+/* ── Embers (Meliora Fun Mode hover) ──────────────────── */
+.card-ember {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff4d6 0%, var(--color) 45%, rgba(255, 90, 20, 0) 78%);
+  box-shadow: 0 0 6px 1px rgba(255, 150, 40, 0.6);
+  pointer-events: none;
+  z-index: 0; /* below ::after plate — drifts into view only once it clears the card */
+  animation: ember-drift var(--duration) ease-out var(--delay) forwards;
+}
+
+@keyframes ember-drift {
+  0%   { opacity: 0;    transform: translate(-50%, -50%) translate(0, 0)                scale(0.6); }
+  14%  { opacity: 1;    }
+  50%  { opacity: 0.8;  }
+  75%  { opacity: 0.85; }
+  100% { opacity: 0;    transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(0.25); }
+}
+
+/* ── Hyperlines (Space Fun Mode hover) ────────────────── */
+.card-hyperline {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 14px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.85) 55%, #ffffff 100%);
+  transform-origin: center bottom;
+  pointer-events: none;
+  z-index: 0; /* below ::after plate — visible only once it streaks past the card */
+  animation: hyperline-streak var(--duration) cubic-bezier(0.55, 0, 0.85, 0.35) var(--delay) forwards;
+}
+
+@keyframes hyperline-streak {
+  0%   { opacity: 0; transform: translate(-50%, -100%) rotate(var(--angle)) translateY(0)              scaleY(0.4); }
+  10%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -100%) rotate(var(--angle)) translateY(var(--distance)) scaleY(var(--stretch)); }
+}
+
 @keyframes star-pop {
   0%   { opacity: 1; transform: translate(-50%, -50%) translate(0px, 0px)               scale(1.2); }
   35%  { opacity: 1; }
@@ -591,61 +746,75 @@ a {
   pointer-events: none;
   z-index: 0;
   animation: rays-breathe 5s ease-in-out infinite;
+}
+
+.meliora-rays::before,
+.meliora-rays::after {
+  content: '';
+  position: absolute;
+  inset: 0;
   mask-image: linear-gradient(to bottom, black 0%, black 38%, rgba(0,0,0,0.5) 55%, transparent 78%);
   background:
     radial-gradient(ellipse 55% 45% at 50% 42%, rgba(255, 252, 210, 0.18) 0%, transparent 100%),
     conic-gradient(
       from 0deg at 50% 42%,
-      /* 12 beams every 30°, soft bell-curve edges, gap sits at 0° */
+      /* 12 beams every 30°, soft bell-curve edges, near-solid white core, gap sits at 0° */
       /* beam 1  — 7° */
       transparent 0deg,
-      rgba(255,252,210,0.10) 4deg,   rgba(255,252,210,0.32) 7deg,   rgba(255,252,210,0.10) 10deg,
+      rgba(255,255,255,0.18) 4deg,   rgba(255,255,255,0.60) 7deg,   rgba(255,255,255,0.18) 10deg,
       transparent 14deg,
       /* beam 2  — 37° */
       transparent 30deg,
-      rgba(255,252,210,0.12) 34deg,  rgba(255,252,210,0.36) 37deg,  rgba(255,252,210,0.12) 40deg,
+      rgba(255,255,255,0.20) 34deg,  rgba(255,255,255,0.65) 37deg,  rgba(255,255,255,0.20) 40deg,
       transparent 44deg,
       /* beam 3  — 67° */
       transparent 60deg,
-      rgba(255,252,210,0.13) 64deg,  rgba(255,252,210,0.40) 67deg,  rgba(255,252,210,0.13) 70deg,
+      rgba(255,255,255,0.22) 64deg,  rgba(255,255,255,0.72) 67deg,  rgba(255,255,255,0.22) 70deg,
       transparent 74deg,
       /* beam 4  — 97° (near straight down, brightest) */
       transparent 90deg,
-      rgba(255,252,210,0.16) 94deg,  rgba(255,252,210,0.52) 97deg,  rgba(255,252,210,0.16) 100deg,
+      rgba(255,255,255,0.28) 94deg,  rgba(255,255,255,0.95) 97deg,  rgba(255,255,255,0.28) 100deg,
       transparent 104deg,
       /* beam 5  — 127° */
       transparent 120deg,
-      rgba(255,252,210,0.13) 124deg, rgba(255,252,210,0.40) 127deg, rgba(255,252,210,0.13) 130deg,
+      rgba(255,255,255,0.22) 124deg, rgba(255,255,255,0.72) 127deg, rgba(255,255,255,0.22) 130deg,
       transparent 134deg,
       /* beam 6  — 157° */
       transparent 150deg,
-      rgba(255,252,210,0.12) 154deg, rgba(255,252,210,0.36) 157deg, rgba(255,252,210,0.12) 160deg,
+      rgba(255,255,255,0.20) 154deg, rgba(255,255,255,0.65) 157deg, rgba(255,255,255,0.20) 160deg,
       transparent 164deg,
       /* beam 7  — 187° */
       transparent 180deg,
-      rgba(255,252,210,0.10) 184deg, rgba(255,252,210,0.32) 187deg, rgba(255,252,210,0.10) 190deg,
+      rgba(255,255,255,0.18) 184deg, rgba(255,255,255,0.60) 187deg, rgba(255,255,255,0.18) 190deg,
       transparent 194deg,
       /* beam 8  — 217° */
       transparent 210deg,
-      rgba(255,252,210,0.10) 214deg, rgba(255,252,210,0.33) 217deg, rgba(255,252,210,0.10) 220deg,
+      rgba(255,255,255,0.18) 214deg, rgba(255,255,255,0.62) 217deg, rgba(255,255,255,0.18) 220deg,
       transparent 224deg,
       /* beam 9  — 247° */
       transparent 240deg,
-      rgba(255,252,210,0.12) 244deg, rgba(255,252,210,0.38) 247deg, rgba(255,252,210,0.12) 250deg,
+      rgba(255,255,255,0.20) 244deg, rgba(255,255,255,0.68) 247deg, rgba(255,255,255,0.20) 250deg,
       transparent 254deg,
       /* beam 10 — 277° (near straight up) */
       transparent 270deg,
-      rgba(255,252,210,0.14) 274deg, rgba(255,252,210,0.46) 277deg, rgba(255,252,210,0.14) 280deg,
+      rgba(255,255,255,0.25) 274deg, rgba(255,255,255,0.85) 277deg, rgba(255,255,255,0.25) 280deg,
       transparent 284deg,
       /* beam 11 — 307° */
       transparent 300deg,
-      rgba(255,252,210,0.12) 304deg, rgba(255,252,210,0.38) 307deg, rgba(255,252,210,0.12) 310deg,
+      rgba(255,255,255,0.20) 304deg, rgba(255,255,255,0.68) 307deg, rgba(255,255,255,0.20) 310deg,
       transparent 314deg,
       /* beam 12 — 337° */
       transparent 330deg,
-      rgba(255,252,210,0.10) 334deg, rgba(255,252,210,0.33) 337deg, rgba(255,252,210,0.10) 340deg,
+      rgba(255,255,255,0.18) 334deg, rgba(255,255,255,0.62) 337deg, rgba(255,255,255,0.18) 340deg,
       transparent 344deg
     );
+}
+
+/* soft halo bleeding outward from the beams */
+.meliora-rays::before {
+  filter: blur(26px);
+  opacity: 0.85;
+  transform: scale(1.08);
 }
 
 @keyframes rays-breathe {
@@ -669,22 +838,22 @@ a {
 .zep-3 { animation: zep-ltr-3 85s linear -40s  infinite; }
 
 @keyframes zep-ltr-1 {
-  0%   { transform: translate(-220px, 340px) scale(0.70); opacity: 0;   }
+  0%   { transform: translate(-220px, 380px) scale(0.70); opacity: 0;   }
   8%   { opacity: 0.80; }
   82%  { opacity: 0.80; }
-  100% { transform: translate(1660px, 340px) scale(0.70); opacity: 0;   }
+  100% { transform: translate(1660px, 380px) scale(0.70); opacity: 0;   }
 }
 @keyframes zep-ltr-2 {
-  0%   { transform: translate(-220px, 230px) scale(0.50); opacity: 0;   }
+  0%   { transform: translate(-220px, 270px) scale(0.50); opacity: 0;   }
   8%   { opacity: 0.70; }
   82%  { opacity: 0.70; }
-  100% { transform: translate(1660px, 230px) scale(0.50); opacity: 0;   }
+  100% { transform: translate(1660px, 270px) scale(0.50); opacity: 0;   }
 }
 @keyframes zep-ltr-3 {
-  0%   { transform: translate(-220px, 150px) scale(0.32); opacity: 0;   }
+  0%   { transform: translate(-220px, 190px) scale(0.32); opacity: 0;   }
   8%   { opacity: 0.62; }
   82%  { opacity: 0.62; }
-  100% { transform: translate(1660px, 150px) scale(0.32); opacity: 0;   }
+  100% { transform: translate(1660px, 190px) scale(0.32); opacity: 0;   }
 }
 
 /* ── right → left ─────────────────────────────────────── */
@@ -692,16 +861,16 @@ a {
 .zep-5 { animation: zep-rtl-2 60s linear -55s  infinite; }
 
 @keyframes zep-rtl-1 {
-  0%   { transform: translate(1660px, 285px) scale(0.60); opacity: 0;   }
+  0%   { transform: translate(1660px, 325px) scale(0.60); opacity: 0;   }
   8%   { opacity: 0.75; }
   82%  { opacity: 0.75; }
-  100% { transform: translate(-220px,  285px) scale(0.60); opacity: 0;  }
+  100% { transform: translate(-220px,  325px) scale(0.60); opacity: 0;  }
 }
 @keyframes zep-rtl-2 {
-  0%   { transform: translate(1660px, 190px) scale(0.38); opacity: 0;   }
+  0%   { transform: translate(1660px, 230px) scale(0.38); opacity: 0;   }
   8%   { opacity: 0.65; }
   82%  { opacity: 0.65; }
-  100% { transform: translate(-220px,  190px) scale(0.38); opacity: 0;  }
+  100% { transform: translate(-220px,  230px) scale(0.38); opacity: 0;  }
 }
 
 /* ── Extra zeppelins (very high / distant) ────────────── */
@@ -709,16 +878,88 @@ a {
 .zep-7 { animation: zep-rtl-7  90s linear -48s infinite; }
 
 @keyframes zep-ltr-6 {
-  0%   { transform: translate(-220px, 75px)  scale(0.22); opacity: 0;    }
+  0%   { transform: translate(-220px, 115px)  scale(0.22); opacity: 0;    }
   8%   { opacity: 0.55; }
   82%  { opacity: 0.55; }
-  100% { transform: translate(1660px, 75px)  scale(0.22); opacity: 0;    }
+  100% { transform: translate(1660px, 115px)  scale(0.22); opacity: 0;    }
 }
 @keyframes zep-rtl-7 {
-  0%   { transform: translate(1660px, 108px) scale(0.28); opacity: 0;    }
+  0%   { transform: translate(1660px, 148px) scale(0.28); opacity: 0;    }
   8%   { opacity: 0.60; }
   82%  { opacity: 0.60; }
-  100% { transform: translate(-220px,  108px) scale(0.28); opacity: 0;   }
+  100% { transform: translate(-220px,  148px) scale(0.28); opacity: 0;   }
+}
+
+/* ── Meliora rolling smoke ─────────────────────────────── */
+.meliora-smoke {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: 280px;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.smoke-puff {
+  position: absolute;
+  bottom: -90px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* three depth layers — smaller/dimmer/blurrier/slower toward the back */
+.smoke-puff.layer-far {
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(222, 218, 202, 0.16) 0%, rgba(180, 176, 160, 0.07) 55%, transparent 80%);
+  filter: blur(24px);
+}
+
+.smoke-puff.layer-mid {
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(222, 218, 202, 0.24) 0%, rgba(180, 176, 160, 0.11) 55%, transparent 80%);
+  filter: blur(18px);
+}
+
+.smoke-puff.layer-near {
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(222, 218, 202, 0.30) 0%, rgba(180, 176, 160, 0.14) 55%, transparent 80%);
+  filter: blur(12px);
+}
+
+.smoke-far-1  { width: 280px; height: 145px; left: -5%; animation: smoke-roll-2 60s linear infinite -20s; }
+.smoke-far-2  { width: 240px; height: 125px; left: 30%; animation: smoke-roll-3 66s linear infinite -5s;  }
+.smoke-far-3  { width: 300px; height: 155px; left: 62%; animation: smoke-roll-1 58s linear infinite -33s; }
+.smoke-far-4  { width: 260px; height: 135px; left: 90%; animation: smoke-roll-2 64s linear infinite -12s; }
+
+.smoke-mid-1  { width: 420px; height: 220px; left: -10%; animation: smoke-roll-1 42s linear infinite;      }
+.smoke-mid-2  { width: 360px; height: 190px; left: 22%;  animation: smoke-roll-2 50s linear infinite -15s; }
+.smoke-mid-3  { width: 480px; height: 240px; left: 52%;  animation: smoke-roll-3 46s linear infinite -28s; }
+.smoke-mid-4  { width: 400px; height: 210px; left: 82%;  animation: smoke-roll-1 54s linear infinite -8s;  }
+
+.smoke-near-1 { width: 520px; height: 270px; left: -15%; animation: smoke-roll-3 34s linear infinite -18s; }
+.smoke-near-2 { width: 460px; height: 240px; left: 18%;  animation: smoke-roll-1 38s linear infinite -6s;  }
+.smoke-near-3 { width: 540px; height: 280px; left: 48%;  animation: smoke-roll-2 36s linear infinite -25s; }
+.smoke-near-4 { width: 480px; height: 250px; left: 78%;  animation: smoke-roll-3 40s linear infinite -10s; }
+
+@keyframes smoke-roll-1 {
+  0%   { transform: translate(0, 0)          scale(0.9);  opacity: 0;    }
+  10%  { opacity: 0.55; }
+  50%  { transform: translate(60px, -16px)   scale(1.05); }
+  90%  { opacity: 0.55; }
+  100% { transform: translate(130px, 0)      scale(0.95); opacity: 0;    }
+}
+
+@keyframes smoke-roll-2 {
+  0%   { transform: translate(0, 0)          scale(0.95); opacity: 0;    }
+  10%  { opacity: 0.45; }
+  50%  { transform: translate(-70px, -20px)  scale(1.1);  }
+  90%  { opacity: 0.45; }
+  100% { transform: translate(-140px, 0)     scale(0.9);  opacity: 0;    }
+}
+
+@keyframes smoke-roll-3 {
+  0%   { transform: translate(0, 0)          scale(1);    opacity: 0;    }
+  10%  { opacity: 0.5; }
+  50%  { transform: translate(40px, -22px)   scale(1.15); }
+  90%  { opacity: 0.5; }
+  100% { transform: translate(90px, 0)       scale(1);    opacity: 0;    }
 }
 
 /* ── Window vignette ──────────────────────────────────── */
@@ -753,6 +994,16 @@ a {
     transparent 34%,
     rgba(0, 0, 0, 0.72) 68%,
     black 92%
+  );
+  mask-image: none;
+}
+
+[data-theme="meliora"] .vignette {
+  background: radial-gradient(
+    ellipse 85% 60% at 50% 8%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.35) 65%,
+    rgba(0, 0, 0, 0.75) 100%
   );
   mask-image: none;
 }
