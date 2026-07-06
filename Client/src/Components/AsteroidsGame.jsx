@@ -32,7 +32,7 @@ function spawnPoint() {
   else                 { x = -ASTEROID_RADIUS; y = Math.random() * GAME_HEIGHT }
 
   const angle = Math.atan2(SHIP_Y - y, SHIP_X - x) + (Math.random() - 0.5) * 1.4
-  const speed = 0.35 + Math.random() * 0.45
+  const speed = (0.35 + Math.random() * 0.45) * 2.5 * 2.5
   return {
     x,
     y,

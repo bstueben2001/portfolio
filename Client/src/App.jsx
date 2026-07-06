@@ -28,7 +28,7 @@ function App() {
       return () => clearTimeout(timer)
     }
     if (introPhase === 'gap') {
-      const timer = setTimeout(() => setIntroPhase('theme'), 3000)
+      const timer = setTimeout(() => setIntroPhase('theme'), 6000)
       return () => clearTimeout(timer)
     }
     if (introPhase === 'theme') {
