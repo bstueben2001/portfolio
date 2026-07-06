@@ -739,6 +739,124 @@ a {
   color: var(--cream-muted);
 }
 
+/* ── Asteroids game (Fun Mode / Beyond theme) ─────────── */
+.fun-mode--game {
+  max-width: none;
+  text-align: left;
+}
+
+.asteroids-wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.asteroids-game {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-green);
+  border: 1px solid var(--border-green);
+  box-shadow: 0 0 60px #0e1a1044, inset 0 0 40px #0a120b33;
+  cursor: crosshair;
+  flex-shrink: 0;
+}
+
+.asteroids-progress {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.9rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.asteroids-ship {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  border-left: 22px solid var(--gold);
+  filter: drop-shadow(0 0 6px var(--gold-dim));
+  pointer-events: none;
+  z-index: 2;
+}
+
+.asteroids-bullet {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--gold-bright);
+  box-shadow: 0 0 8px 2px var(--gold-dim);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.asteroids-rock {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--bg-raised) 0%, var(--bg-green-raised) 65%, var(--bg-green) 100%);
+  border: 1px solid var(--border-gold);
+  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.asteroids-rock-label {
+  padding: 0 0.4rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: var(--cream);
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.asteroids-win-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: rgba(4, 4, 9, 0.82);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.asteroids-win-overlay h2 {
+  font-size: 2rem;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.asteroids-win-overlay p {
+  color: var(--cream-muted);
+}
+
+.asteroids-inventory {
+  width: 280px;
+  flex-shrink: 0;
+  min-height: 440px;
+}
+
 /* ── Meliora spotlight rays ───────────────────────────── */
 .meliora-rays {
   position: fixed;
