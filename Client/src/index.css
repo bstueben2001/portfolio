@@ -319,7 +319,7 @@
 [data-theme="legacy"] h1,
 [data-theme="legacy"] h2,
 [data-theme="legacy"] h3 {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Share Tech Mono', monospace;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-shadow: 0 0 12px rgba(0, 200, 255, 0.6), 0 0 28px rgba(0, 200, 255, 0.2);
@@ -1035,6 +1035,273 @@ a {
 .cycle-restart:hover {
   border-color: var(--gold);
   color: var(--gold-bright);
+}
+
+/* ── Ember rhythm game (Fun Mode / Meliora theme) ─────── */
+/* Reuses .asteroids-wrap / .asteroids-game / .asteroids-progress /
+   .asteroids-win-overlay / .asteroids-inventory for a matching
+   window and inventory layout, same as the other two Fun Modes. */
+.rhythm-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  cursor: default;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.rhythm-game--hit {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 24px rgba(232, 201, 106, 0.5), inset 0 0 30px rgba(232, 201, 106, 0.15);
+}
+
+.rhythm-game--miss {
+  border-color: #d9481f;
+  box-shadow: 0 0 24px rgba(217, 72, 31, 0.55), inset 0 0 30px rgba(217, 72, 31, 0.18);
+}
+
+.rhythm-title {
+  margin: 0;
+  text-align: center;
+  color: var(--cream);
+}
+
+.rhythm-hint {
+  text-align: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  pointer-events: none;
+}
+
+.rhythm-message {
+  font-family: 'Cormorant', serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--gold-bright);
+  text-shadow: 0 0 18px rgba(232, 201, 106, 0.5);
+}
+
+.rhythm-start-text {
+  max-width: 24rem;
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.rhythm-start-button {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.rhythm-start-button:hover {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+}
+
+.rhythm-strip {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.rhythm-tile {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-green-raised);
+  border: 2px solid var(--border-gold);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.rhythm-arrow {
+  font-size: 1.8rem;
+  color: var(--gold-dim);
+  transition: color 0.2s;
+}
+
+.rhythm-tile--active {
+  border-color: var(--gold-bright);
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(232, 201, 106, 0.5);
+}
+
+.rhythm-tile--active .rhythm-arrow {
+  color: var(--gold-bright);
+}
+
+.rhythm-tile--done {
+  border-color: var(--gold-dim);
+  opacity: 0.55;
+}
+
+.rhythm-tile--done .rhythm-arrow {
+  color: var(--gold);
+}
+
+.rhythm-timer-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: var(--gold-bright);
+  box-shadow: 0 0 8px 1px var(--gold-bright);
+  animation-name: rhythm-shrink;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  /* animation-duration set per-instance inline, since the time-per-arrow
+     window speeds up 5% with every round completed */
+}
+
+@keyframes rhythm-shrink {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+/* ── Fishing game (Fun Mode / Hail Mary theme) ────────── */
+/* Reuses .asteroids-wrap / .asteroids-game / .asteroids-progress /
+   .asteroids-win-overlay / .asteroids-inventory for a matching
+   window and inventory layout, same as the other Fun Modes. */
+.fishing-game {
+  cursor: none;
+  background-color: #04060d;
+  /* simple tiled starfield — a handful of soft white/blue dots repeated
+     across the box, cheaper than rendering real star elements */
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+    radial-gradient(1px 1px at 90px 70px, rgba(150, 190, 255, 0.9), transparent),
+    radial-gradient(1.5px 1.5px at 150px 25px, #fff, transparent),
+    radial-gradient(1px 1px at 210px 110px, rgba(150, 190, 255, 0.85), transparent),
+    radial-gradient(1px 1px at 270px 55px, #fff, transparent),
+    radial-gradient(2px 2px at 45px 145px, rgba(160, 200, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 320px 170px, #fff, transparent),
+    radial-gradient(1px 1px at 110px 10px, rgba(150, 190, 255, 0.8), transparent);
+  background-repeat: repeat;
+  background-size: 340px 200px;
+}
+
+.fishing-ship {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
+}
+
+/* a much larger circle, mostly hidden below the box (clipped by
+   .asteroids-game's overflow:hidden) — only its top arc shows, reading
+   as the curved horizon of a planet rather than a flat pool */
+.fishing-pool {
+  position: absolute;
+  left: 50%;
+  top: 180px;
+  width: 1200px;
+  height: 1200px;
+  border-radius: 50%;
+  overflow: hidden;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(30, 220, 140, 0.4) 0%, rgba(14, 110, 70, 0.55) 45%, rgba(6, 40, 28, 0.8) 100%);
+  border: 1px solid rgba(60, 220, 140, 0.4);
+  box-shadow: 0 0 60px rgba(30, 220, 140, 0.35) inset;
+}
+
+/* swirling storm bands, like a gas giant's cloud tops — a slowly
+   rotating conic gradient clipped to the pool's circular shape */
+.fishing-pool::before {
+  content: '';
+  position: absolute;
+  inset: -15%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(20, 120, 80, 0)     0deg,
+    rgba(60, 220, 140, 0.35) 18deg,
+    rgba(10, 70, 45, 0.28)   40deg,
+    rgba(90, 235, 160, 0.4)  65deg,
+    rgba(10, 70, 45, 0.25)   95deg,
+    rgba(60, 220, 140, 0.35) 135deg,
+    rgba(10, 70, 45, 0.22)   175deg,
+    rgba(90, 235, 160, 0.4)  210deg,
+    rgba(10, 70, 45, 0.25)   250deg,
+    rgba(60, 220, 140, 0.35) 290deg,
+    rgba(10, 70, 45, 0.28)   330deg,
+    rgba(20, 120, 80, 0)     360deg
+  );
+  mix-blend-mode: soft-light;
+  animation: pool-swirl 70s linear infinite;
+}
+
+@keyframes pool-swirl {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.fishing-line-svg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fishing-hook {
+  position: absolute;
+  width: 40px;
+  height: auto;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 3;
+  filter: drop-shadow(0 0 6px rgba(240, 208, 168, 0.5));
+}
+
+.fishing-catch {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  /* taumoeba.png is a big mostly-transparent sheet — background-image
+     itself is set inline (needs the bundled asset URL), but the crop is
+     fixed here: zoomed/positioned to frame just the organism cluster
+     instead of showing all the surrounding empty space */
+  background-repeat: no-repeat;
+  background-size: 46px 37px;
+  background-position: -10px -4px;
+  z-index: 2;
+}
+
+.fishing-hint {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  pointer-events: none;
+  z-index: 3;
 }
 
 /* ── Meliora spotlight rays ───────────────────────────── */

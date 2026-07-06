@@ -1,6 +1,8 @@
 import { useTheme } from '../context/ThemeContext'
 import AsteroidsGame from './AsteroidsGame'
 import LightCycleGame from './LightCycleGame'
+import EmberRhythmGame from './EmberRhythmGame'
+import FishingGame from './FishingGame'
 
 function FunMode() {
   const { theme } = useTheme()
@@ -17,6 +19,22 @@ function FunMode() {
     return (
       <main className="fun-mode fun-mode--game">
         <LightCycleGame />
+      </main>
+    )
+  }
+
+  if (theme === 'meliora') {
+    return (
+      <main className="fun-mode fun-mode--game">
+        <EmberRhythmGame />
+      </main>
+    )
+  }
+
+  if (theme === 'hail-mary') {
+    return (
+      <main className="fun-mode fun-mode--game">
+        <FishingGame />
       </main>
     )
   }
