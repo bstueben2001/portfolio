@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400&family=Inter:wght@300;400;500&family=Orbitron:wght@600;700&family=Rajdhani:wght@400;500;600&family=Exo+2:wght@200;300&family=Cormorant:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400&family=Inter:wght@300;400;500&family=Orbitron:wght@600;700&family=Rajdhani:wght@400;500;600&family=Exo+2:wght@200;300&family=Cormorant:wght@300;400;500&family=Share+Tech+Mono&display=swap');
 
 /* ── Space palette (default) ──────────────────────────── */
 :root {
@@ -309,7 +309,7 @@
 
 /* ── Legacy (TRON) overrides ──────────────────────────── */
 [data-theme="legacy"] body {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Share Tech Mono', monospace;
   background-image:
     radial-gradient(ellipse 80% 65% at 50% 42%, rgba(0, 80, 160, 0.18) 0%, transparent 65%),
     repeating-linear-gradient(rgba(0, 200, 255, 0.032) 0px, rgba(0, 200, 255, 0.032) 1px, transparent 1px, transparent 50px),
@@ -349,6 +349,12 @@
   background-color: var(--bg-raised);
   box-shadow: 0 0 18px rgba(255, 106, 0, 0.5), 0 0 38px rgba(255, 106, 0, 0.2);
   animation: tron-glitch 0.45s ease-out forwards;
+}
+
+[data-theme="legacy"] .info-card:hover .card-icon,
+[data-theme="legacy"] .info-card:hover h2,
+[data-theme="legacy"] .info-card:hover p {
+  color: var(--rust);
 }
 
 [data-theme="legacy"] .fun-card:hover {
@@ -684,6 +690,74 @@ a {
   50%  { opacity: 0.8;  }
   75%  { opacity: 0.85; }
   100% { opacity: 0;    transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(0.25); }
+}
+
+/* ── Legacy glitch text (Fun Mode hover, replaces stars) ─ */
+.fun-card--glitching .card-content h2,
+.fun-card--glitching .card-content p {
+  animation: legacy-glitch-jitter 0.25s steps(2, end) infinite;
+}
+
+@keyframes legacy-glitch-jitter {
+  0%   { transform: translate(0, 0);      text-shadow: none; }
+  20%  { transform: translate(-1px, 1px); text-shadow: 1px 0 #ff2b6d, -1px 0 #00e5ff; }
+  40%  { transform: translate(1px, -1px); text-shadow: -1px 0 #ff2b6d, 1px 0 #00e5ff; }
+  60%  { transform: translate(-1px, 0);   text-shadow: 1px 0 #ff2b6d, -1px 0 #00e5ff; }
+  80%  { transform: translate(1px, 1px);  text-shadow: none; }
+  100% { transform: translate(0, 0);      text-shadow: none; }
+}
+
+/* Pixel debris in the area behind the card while glitching */
+.card-pixel {
+  position: absolute;
+  /* top/left (origin spot behind the card) set per-instance inline */
+  width: var(--size);
+  height: var(--size);
+  background: var(--color);
+  box-shadow: 0 0 6px 1px var(--color);
+  pointer-events: none;
+  z-index: 0; /* below ::after plate — visible only once it clears the card */
+}
+
+/* Drifts slowly along a single axis (never diagonal) and fades out */
+.card-pixel--drift {
+  animation: pixel-drift var(--duration) ease-out var(--delay) forwards;
+}
+
+@keyframes pixel-drift {
+  0%   { opacity: 0;   transform: translate(-50%, -50%) translate(0, 0); }
+  12%  { opacity: 1;   }
+  50%  { opacity: 0.6; }
+  100% { opacity: 0;   transform: translate(-50%, -50%) translate(var(--tx), var(--ty)); }
+}
+
+/* Holds still, then teleports between a few nearby spots, holds, teleports again */
+.card-pixel--shift {
+  animation: pixel-shift var(--duration) steps(1, end) var(--delay) forwards;
+}
+
+@keyframes pixel-shift {
+  0%   { opacity: 0; transform: translate(-50%, -50%) translate(0, 0); }
+  8%   { opacity: 1; }
+  25%  { transform: translate(-50%, -50%) translate(var(--sx1), var(--sy1)); }
+  50%  { transform: translate(-50%, -50%) translate(var(--sx2), var(--sy2)); }
+  75%  { transform: translate(-50%, -50%) translate(var(--sx3), var(--sy3)); }
+  92%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--sx3), var(--sy3)); }
+}
+
+.glitch-word-active {
+  color: #ff2b6d;
+  text-shadow: 2px 0 #00e5ff, -2px 0 #ff2b6d !important;
+  letter-spacing: 0.05em;
+  animation: legacy-glitch-spike 0.15s steps(1, end) infinite !important;
+}
+
+@keyframes legacy-glitch-spike {
+  0%, 100% { transform: translate(0, 0)     skewX(0deg); opacity: 1; }
+  25%      { transform: translate(-3px, 1px) skewX(4deg); opacity: 0.8; }
+  50%      { transform: translate(3px, -1px) skewX(-4deg); opacity: 1; }
+  75%      { transform: translate(-2px, 0)  skewX(2deg); opacity: 0.85; }
 }
 
 /* ── Hyperlines (Space Fun Mode hover) ────────────────── */
