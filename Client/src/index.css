@@ -888,6 +888,81 @@ a {
   font-size: 0.85rem;
 }
 
+/* ── Light cycle game (Fun Mode / Legacy theme) ───────── */
+/* Reuses .asteroids-wrap / .asteroids-game / .asteroids-progress /
+   .asteroids-win-overlay / .asteroids-inventory as-is for a matching
+   window and inventory layout — only the playfield contents differ. */
+.cycle-game {
+  background-image:
+    linear-gradient(var(--border-green) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-green) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.cycle-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cycle-seg {
+  position: absolute;
+  background: var(--gold);
+  box-shadow: 0 0 8px 1px var(--gold-dim);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cycle-seg--head {
+  background: var(--gold-bright);
+  box-shadow: 0 0 14px 3px var(--gold-bright), 0 0 26px 6px var(--gold-dim);
+  z-index: 2;
+}
+
+.cycle-item {
+  position: absolute;
+  background: #ff9a40;
+  border-radius: 3px;
+  box-shadow: 0 0 10px 2px #ff6a00, 0 0 22px 5px rgba(255, 106, 0, 0.6);
+  animation: cycle-item-pulse 1s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes cycle-item-pulse {
+  from { transform: scale(0.85); }
+  to   { transform: scale(1.05); }
+}
+
+.cycle-restart {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.cycle-restart:hover {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+}
+
 /* ── Meliora spotlight rays ───────────────────────────── */
 .meliora-rays {
   position: fixed;

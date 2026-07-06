@@ -1,5 +1,6 @@
 import { useTheme } from '../context/ThemeContext'
 import AsteroidsGame from './AsteroidsGame'
+import LightCycleGame from './LightCycleGame'
 
 function FunMode() {
   const { theme } = useTheme()
@@ -8,6 +9,14 @@ function FunMode() {
     return (
       <main className="fun-mode fun-mode--game">
         <AsteroidsGame />
+      </main>
+    )
+  }
+
+  if (theme === 'legacy') {
+    return (
+      <main className="fun-mode fun-mode--game">
+        <LightCycleGame />
       </main>
     )
   }

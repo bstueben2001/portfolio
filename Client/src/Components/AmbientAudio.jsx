@@ -12,6 +12,14 @@ const TRACKS = {
   legacy: legacyAmbience,
 }
 
+// Caps how loud any track can get relative to the slider, so "100%" on
+// the slider only ever plays back at half volume.
+const MAX_VOLUME = 0.5
+
+function effectiveVolume(rawVolume) {
+  return rawVolume * MAX_VOLUME
+}
+
 function AmbientAudio({ showIntro = false }) {
   const { theme } = useTheme()
   const audioRef = useRef(null)
@@ -23,8 +31,12 @@ function AmbientAudio({ showIntro = false }) {
   useEffect(() => {
     const audio = audioRef.current
     if (!audio || !track) return
-    audio.volume = volume
+    // Legacy always starts at a lower volume on switching in, rather than
+    // carrying over whatever the slider was left at for another theme.
+    const nextVolume = theme === 'legacy' ? 0.2 : volume
+    setVolume(nextVolume)
     audio.load()
+    audio.volume = effectiveVolume(nextVolume)
     audio.play().catch(() => {})
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [track])
@@ -44,7 +56,7 @@ function AmbientAudio({ showIntro = false }) {
   function handleVolumeChange(e) {
     const next = Number(e.target.value)
     setVolume(next)
-    if (audioRef.current) audioRef.current.volume = next
+    if (audioRef.current) audioRef.current.volume = effectiveVolume(next)
     if (muted && next > 0) {
       setMuted(false)
       if (audioRef.current) {
