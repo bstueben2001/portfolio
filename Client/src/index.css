@@ -835,9 +835,21 @@ a {
 }
 
 .asteroids-inventory {
-  width: 280px;
+  width: 360px;
   flex-shrink: 0;
   min-height: 440px;
+}
+
+.asteroids-inventory h2 {
+  font-size: 1.275rem;
+}
+
+.asteroids-inventory h3 {
+  font-size: 0.99rem;
+}
+
+.asteroids-inventory p {
+  font-size: 0.85rem;
 }
 
 /* ── Meliora spotlight rays ───────────────────────────── */
