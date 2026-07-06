@@ -1131,12 +1131,30 @@ a {
   100% { opacity: 0; transform: translate(70vw, 32vh)     rotate(20deg) scaleX(1);   }
 }
 
-/* ── UI controls (theme dropdown + audio toggle) ──────── */
+/* ── UI controls (theme dropdown) ─────────────────────── */
 .ui-controls {
   position: fixed;
   top: 1rem;
   right: 1rem;
   z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── UI controls (audio control + restart button) ─────── */
+.ui-controls-left {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.audio-control {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1164,12 +1182,81 @@ a {
   color: var(--cream);
 }
 
+.audio-toggle--glow {
+  animation: audio-glow-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes audio-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 196, 64, 0.55); }
+  50%      { box-shadow: 0 0 16px 7px rgba(255, 196, 64, 0.55); }
+}
+
+.audio-volume-slider {
+  width: 5.5rem;
+  accent-color: var(--gold-dim);
+  cursor: pointer;
+}
+
+/* speech bubble pointing back at the audio control (open space is to its right) */
+.audio-hint {
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: whitesmoke;
+  border: 1px solid #cccccc;
+  color: #333333;
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.4;
+  padding: 0.5rem 0.8rem;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 210;
+  animation: hint-in 0.35s ease forwards, hint-out 0.4s ease 2.6s forwards;
+}
+
+/* tail pointing left toward the audio control */
+.audio-hint::after {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 8px solid whitesmoke;
+}
+
+/* border outline on the tail */
+.audio-hint::before {
+  content: '';
+  position: absolute;
+  right: calc(100% + 1px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 9px solid #cccccc;
+  z-index: -1;
+}
+
+/* ── Intro blur overlay ───────────────────────────────── */
+.intro-blur-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  pointer-events: none;
+}
+
 /* ── Restart button ────────────────────────────────────── */
 .restart-button {
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 200;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;

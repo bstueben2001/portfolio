@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import ThemeDropdown from './Components/ThemeDropdown'
@@ -19,6 +20,23 @@ import InfoMode from './Components/InfoMode'
 import FunMode from './Components/FunMode'
 
 function App() {
+  const [introPhase, setIntroPhase] = useState('audio')
+
+  useEffect(() => {
+    if (introPhase === 'audio') {
+      const timer = setTimeout(() => setIntroPhase('gap'), 3000)
+      return () => clearTimeout(timer)
+    }
+    if (introPhase === 'gap') {
+      const timer = setTimeout(() => setIntroPhase('theme'), 3000)
+      return () => clearTimeout(timer)
+    }
+    if (introPhase === 'theme') {
+      const timer = setTimeout(() => setIntroPhase('done'), 6000)
+      return () => clearTimeout(timer)
+    }
+  }, [introPhase])
+
   return (
     <ThemeProvider>
       <BrowserRouter>
@@ -33,10 +51,13 @@ function App() {
         <div className="vignette" />
         <LegacyEffects />
         <CursorFluid />
-        <RestartButton />
+        {introPhase === 'audio' && <div className="intro-blur-overlay" />}
+        <div className="ui-controls-left">
+          <AmbientAudio showIntro={introPhase === 'audio'} />
+          <RestartButton />
+        </div>
         <div className="ui-controls">
-          <AmbientAudio />
-          <ThemeDropdown />
+          <ThemeDropdown showHint={introPhase === 'theme'} />
         </div>
         <div className="app-content">
           <Routes>

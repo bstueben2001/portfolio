@@ -12,19 +12,21 @@ const TRACKS = {
   legacy: legacyAmbience,
 }
 
-function AmbientAudio() {
+function AmbientAudio({ showIntro = false }) {
   const { theme } = useTheme()
   const audioRef = useRef(null)
   const [muted, setMuted] = useState(true)
+  const [volume, setVolume] = useState(0.35)
 
   const track = TRACKS[theme]
 
   useEffect(() => {
     const audio = audioRef.current
     if (!audio || !track) return
-    audio.volume = 0.35
+    audio.volume = volume
     audio.load()
     audio.play().catch(() => {})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [track])
 
   if (!track) return null
@@ -39,18 +41,46 @@ function AmbientAudio() {
     }
   }
 
+  function handleVolumeChange(e) {
+    const next = Number(e.target.value)
+    setVolume(next)
+    if (audioRef.current) audioRef.current.volume = next
+    if (muted && next > 0) {
+      setMuted(false)
+      if (audioRef.current) {
+        audioRef.current.muted = false
+        audioRef.current.play().catch(() => {})
+      }
+    }
+  }
+
   return (
-    <>
+    <div className="audio-control">
       <audio ref={audioRef} src={track} loop muted={muted} />
+      {showIntro && (
+        <div className="audio-hint">
+          Turn on volume for a more immersive experience!
+        </div>
+      )}
       <button
         type="button"
-        className="audio-toggle"
+        className={`audio-toggle${showIntro ? ' audio-toggle--glow' : ''}`}
         onClick={handleToggle}
         aria-label={muted ? 'Unmute ambient music' : 'Mute ambient music'}
       >
         {muted ? '🔇' : '🔊'}
       </button>
-    </>
+      <input
+        type="range"
+        className="audio-volume-slider"
+        min={0}
+        max={1}
+        step={0.01}
+        value={volume}
+        onChange={handleVolumeChange}
+        aria-label="Ambient volume"
+      />
+    </div>
   )
 }
 

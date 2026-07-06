@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useTheme } from '../context/ThemeContext'
 
 const THEMES = [
@@ -8,18 +8,15 @@ const THEMES = [
   { value: 'legacy',    label: 'Legacy'    },
 ]
 
-function ThemeDropdown() {
+function ThemeDropdown({ showHint: showHintProp = false }) {
   const { theme, setTheme } = useTheme()
-  const [showHint, setShowHint] = useState(true)
+  const [dismissed, setDismissed] = useState(false)
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShowHint(false), 6000)
-    return () => clearTimeout(timer)
-  }, [])
+  const showHint = showHintProp && !dismissed
 
   function handleChange(e) {
     setTheme(e.target.value)
-    setShowHint(false)
+    setDismissed(true)
   }
 
   return (
