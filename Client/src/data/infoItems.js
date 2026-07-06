@@ -4,7 +4,7 @@ export const INFO_ITEMS = [
   { id: 'email',    section: 'contact',  label: 'bstueben2001@gmail.com' },
   { id: 'phone',    section: 'contact',  label: '(435) 225-5681' },
   { id: 'bio',      section: 'about',    label: 'With a balanced understanding of fundamental coding and familiarity utilizing AI, my established skillset creates an environment of both progression and creative style.' },
-  { id: 'stalwart', section: 'projects', label: 'Stalwart [BETA]', href: 'https://stalwart-v1-0.onrender.com/' },
+  { id: 'stalwart', section: 'projects', label: 'Stalwart [ALPHA]', href: 'https://stalwart-v1-0.onrender.com/' },
   { id: 'merge',    section: 'projects', label: 'Merge',           href: 'https://merge-5wde.onrender.com' },
   { id: 'alterego', section: 'projects', label: 'AlterEgo',        href: 'https://alterego-irhf.onrender.com/' },
   { id: 'github',   section: 'links',    label: 'GitHub',   href: 'https://github.com/bstueben2001' },
