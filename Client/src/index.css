@@ -401,30 +401,56 @@
   pointer-events: none;
   z-index: 3;
   left: 0;
-  display: flex;
-  align-items: flex-end;
 }
 
-/* Light trail — sits to the left (LTR) or right (RTL) of the cycle */
+/* Cycle image wrapper — the only in-flow content of .lc-wrap, so the
+   entrance/exit animation's translateX maps directly to its on-screen
+   position (the trail is positioned absolutely and doesn't affect this). */
+.lc-cycle {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+}
+
+/* Light trail — anchored off the left (LTR) or right (RTL) edge of
+   .lc-cycle via absolute positioning, so its 100vw width never
+   contributes to .lc-wrap's layout size or displaces the cycle itself. */
 .lc-trail {
-  flex-shrink: 0;
-  align-self: flex-end;
-  height: calc(10px * var(--lc-scale));
-  width: calc(380px * var(--lc-scale));
-  margin-bottom: calc(2px * var(--lc-scale));
+  position: absolute;
+  z-index: 0;
+  right: 100%;
+  bottom: calc(22px * var(--lc-scale));
+  height: calc(20px * var(--lc-scale));
+  width: 100vw;
 }
 
+.lc-rtl .lc-trail {
+  right: auto;
+  left: 100%;
+}
+
+/* Pulled toward the cycle (and behind it, via z-index) so the beam starts
+   tucked under the rear wheel instead of flush against the image edge.
+   mask-image fades the whole trail (fill + glow) to fully transparent
+   toward the far end, instead of the glow cutting off hard against the
+   page background, and stretches that fade across the full page width. */
 .lc-trail-cyan {
+  transform: translateX(calc(18px * var(--lc-scale)));
   background: linear-gradient(to right, transparent, rgba(0,200,255,0.85), #9be9ff);
   box-shadow:
-    0 0 calc(16px * var(--lc-scale)) calc(3px * var(--lc-scale)) rgba(0,200,255,0.9),
-    0 0 calc(34px * var(--lc-scale)) calc(7px * var(--lc-scale)) rgba(0,200,255,0.55);
+    0 0 calc(24px * var(--lc-scale)) calc(5px * var(--lc-scale)) rgba(0,200,255,0.95),
+    0 0 calc(50px * var(--lc-scale)) calc(11px * var(--lc-scale)) rgba(0,200,255,0.65);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 100%);
 }
 .lc-trail-orange {
+  transform: translateX(calc(-18px * var(--lc-scale)));
   background: linear-gradient(to left, transparent, rgba(255,106,0,0.85), #ffc38a);
   box-shadow:
-    0 0 calc(16px * var(--lc-scale)) calc(3px * var(--lc-scale)) rgba(255,106,0,0.9),
-    0 0 calc(34px * var(--lc-scale)) calc(7px * var(--lc-scale)) rgba(255,106,0,0.55);
+    0 0 calc(24px * var(--lc-scale)) calc(5px * var(--lc-scale)) rgba(255,106,0,0.95),
+    0 0 calc(50px * var(--lc-scale)) calc(11px * var(--lc-scale)) rgba(255,106,0,0.65);
+  mask-image: linear-gradient(to left, transparent 0%, black 15%, black 100%);
+  -webkit-mask-image: linear-gradient(to left, transparent 0%, black 15%, black 100%);
 }
 
 /* Cycle image */
@@ -436,23 +462,23 @@
 }
 
 /* Individual timing */
-.lc-a { animation: lc-ltr 20s linear  -6s infinite; }
-.lc-b { animation: lc-ltr 30s linear -16s infinite; }
-.lc-c { animation: lc-ltr 42s linear -27s infinite; }
-.lc-d { animation: lc-rtl 26s linear -11s infinite; }
+.lc-a { animation: lc-ltr 8s   linear 0s    infinite backwards; }
+.lc-b { animation: lc-ltr 5.5s linear 1.5s  infinite backwards; }
+.lc-c { animation: lc-ltr 8s   linear 3.5s  infinite backwards; }
+.lc-d { animation: lc-rtl 10s  linear 4s    infinite backwards; }
 
 @keyframes lc-ltr {
-  0%   { transform: translateX(-500px); opacity: 0; }
+  0%   { transform: translateX(-800px); opacity: 0; }
   8%   { opacity: 1;   }
   88%  { opacity: 1;   }
-  100% { transform: translateX(calc(100vw + 300px)); opacity: 0; }
+  100% { transform: translateX(calc(100vw + 500px)); opacity: 0; }
 }
 
 @keyframes lc-rtl {
-  0%   { transform: translateX(calc(100vw + 500px)); opacity: 0; }
+  0%   { transform: translateX(calc(100vw + 800px)); opacity: 0; }
   8%   { opacity: 1;   }
   88%  { opacity: 1;   }
-  100% { transform: translateX(-300px); opacity: 0; }
+  100% { transform: translateX(-500px); opacity: 0; }
 }
 
 /* ── Reset & base ─────────────────────────────────────── */

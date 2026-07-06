@@ -6,10 +6,10 @@ const CYAN   = '#00c8ff'
 const ORANGE = '#ff6a00'
 
 const CYCLES = [
-  { cls: 'lc-a', color: CYAN,   img: blueCycleImg,   scale: 1.00, bottom: 26 },
-  { cls: 'lc-b', color: CYAN,   img: blueCycleImg,   scale: 0.68, bottom: 44 },
-  { cls: 'lc-c', color: CYAN,   img: blueCycleImg,   scale: 0.44, bottom: 58 },
-  { cls: 'lc-d', color: ORANGE, img: orangeCycleImg, scale: 0.80, bottom: 34, rtl: true },
+  { cls: 'lc-a', color: CYAN,   img: blueCycleImg,   scale: 1.80, bottom: -28 },
+  { cls: 'lc-b', color: CYAN,   img: blueCycleImg,   scale: 1.20, bottom: -22 },
+  { cls: 'lc-c', color: CYAN,   img: blueCycleImg,   scale: 0.75, bottom: -16 },
+  { cls: 'lc-d', color: ORANGE, img: orangeCycleImg, scale: 1.45, bottom: -26, rtl: true },
 ]
 
 function LightCycle({ cls, color, img, scale, bottom, rtl = false }) {
@@ -17,21 +17,19 @@ function LightCycle({ cls, color, img, scale, bottom, rtl = false }) {
     filter: `drop-shadow(0 0 5px ${color}) drop-shadow(0 0 18px ${color}) drop-shadow(0 0 32px ${color}aa)`,
   }
 
-  // Source art faces left (nose left, seat hump right), so LTR cycles need
-  // a horizontal flip to face their direction of travel; the RTL cycle doesn't.
+  // The trail is positioned absolutely (not a flex sibling) so its 100vw
+  // width doesn't push the cycle's own on-screen position around — only
+  // the .lc-cycle box gets translated by the entrance/exit animation.
   return (
     <div
       className={`lc-wrap ${cls}${rtl ? ' lc-rtl' : ''}`}
       style={{ '--lc-scale': scale, bottom: `${bottom}px` }}
     >
-      {/* trail behind the cycle (left for LTR, right for RTL) */}
-      {!rtl && <div className="lc-trail lc-trail-cyan" />}
+      <div className={`lc-trail ${rtl ? 'lc-trail-orange' : 'lc-trail-cyan'}`} />
 
-      <div style={!rtl ? { transform: 'scaleX(-1)', ...glowStyle } : glowStyle}>
+      <div className="lc-cycle" style={rtl ? { transform: 'scaleX(-1)', ...glowStyle } : glowStyle}>
         <img src={img} alt="" className="lc-img" />
       </div>
-
-      {rtl && <div className="lc-trail lc-trail-orange" />}
     </div>
   )
 }
