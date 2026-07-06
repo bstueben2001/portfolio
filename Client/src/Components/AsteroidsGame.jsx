@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { INFO_ITEMS } from '../data/infoItems'
+import asteroid1 from '../assets/asteroid1.png'
+import asteroid2 from '../assets/asteroid2.png'
+import asteroid3 from '../assets/asteroid3.png'
+
+const ASTEROID_IMAGES = [asteroid1, asteroid2, asteroid3]
 
 const GAME_WIDTH = 640
 const GAME_HEIGHT = 440
@@ -14,6 +19,10 @@ const INITIAL_SPAWN_COUNT = 3
 let uid = 0
 const nextId = () => (uid += 1)
 
+function randomAsteroidImage() {
+  return ASTEROID_IMAGES[Math.floor(Math.random() * ASTEROID_IMAGES.length)]
+}
+
 function spawnPoint() {
   const edge = Math.floor(Math.random() * 4)
   let x, y
@@ -24,7 +33,14 @@ function spawnPoint() {
 
   const angle = Math.atan2(SHIP_Y - y, SHIP_X - x) + (Math.random() - 0.5) * 1.4
   const speed = 0.35 + Math.random() * 0.45
-  return { x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed }
+  return {
+    x,
+    y,
+    vx: Math.cos(angle) * speed,
+    vy: Math.sin(angle) * speed,
+    image: randomAsteroidImage(),
+    rotation: Math.random() * 360,
+  }
 }
 
 function shuffled(arr) {
@@ -43,6 +59,7 @@ function initialWorld() {
     bullets: [],
     asteroids: initialIds.map(itemId => ({ id: nextId(), itemId, ...spawnPoint() })),
     queue,
+    collected: [],
   }
 }
 
@@ -50,9 +67,8 @@ function AsteroidsGame() {
   const gameRef = useRef(null)
   const [shipAngle, setShipAngle] = useState(0)
   const [world, setWorld] = useState(initialWorld)
-  const [collected, setCollected] = useState([])
 
-  const won = collected.length === INFO_ITEMS.length
+  const won = world.collected.length === INFO_ITEMS.length
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -75,9 +91,9 @@ function AsteroidsGame() {
     let raf
 
     const tick = () => {
-      const gainedIds = []
-
       setWorld(prev => {
+        if (prev.collected.length === INFO_ITEMS.length) return prev
+
         const bullets = prev.bullets
           .map(b => ({ ...b, x: b.x + b.vx, y: b.y + b.vy }))
           .filter(b => b.x > -20 && b.x < GAME_WIDTH + 20 && b.y > -20 && b.y < GAME_HEIGHT + 20)
@@ -94,6 +110,7 @@ function AsteroidsGame() {
 
         const hitBulletIds = new Set()
         const hitAsteroidIds = new Set()
+        const gainedIds = []
 
         for (const bullet of bullets) {
           for (const asteroid of asteroids) {
@@ -109,20 +126,17 @@ function AsteroidsGame() {
           }
         }
 
+        const collected = gainedIds.length > 0
+          ? [...new Set([...prev.collected, ...gainedIds])]
+          : prev.collected
+
         return {
           ...prev,
           bullets: bullets.filter(b => !hitBulletIds.has(b.id)),
           asteroids: asteroids.filter(a => !hitAsteroidIds.has(a.id)),
+          collected,
         }
       })
-
-      if (gainedIds.length > 0) {
-        setCollected(prev => {
-          const merged = new Set(prev)
-          gainedIds.forEach(id => merged.add(id))
-          return [...merged]
-        })
-      }
 
       raf = requestAnimationFrame(tick)
     }
@@ -155,7 +169,7 @@ function AsteroidsGame() {
     setWorld(prev => ({ ...prev, bullets: [...prev.bullets, bullet] }))
   }
 
-  const collectedSet = new Set(collected)
+  const collectedSet = new Set(world.collected)
   const bySection = section => INFO_ITEMS.filter(item => item.section === section && collectedSet.has(item.id))
   const contact = bySection('contact')
   const about = bySection('about')
@@ -171,7 +185,7 @@ function AsteroidsGame() {
         onMouseMove={handleMouseMove}
         onClick={handleClick}
       >
-        <div className="asteroids-progress">{collected.length} / {INFO_ITEMS.length} found</div>
+        <div className="asteroids-progress">{world.collected.length} / {INFO_ITEMS.length} found</div>
 
         <div
           className="asteroids-ship"
@@ -182,18 +196,21 @@ function AsteroidsGame() {
           <div key={b.id} className="asteroids-bullet" style={{ left: b.x, top: b.y }} />
         ))}
 
-        {world.asteroids.map(a => {
-          const item = INFO_ITEMS.find(i => i.id === a.itemId)
-          return (
-            <div
-              key={a.id}
-              className="asteroids-rock"
-              style={{ left: a.x, top: a.y, width: ASTEROID_RADIUS * 2, height: ASTEROID_RADIUS * 2 }}
-            >
-              <span className="asteroids-rock-label">{item.label}</span>
-            </div>
-          )
-        })}
+        {world.asteroids.map(a => (
+          <img
+            key={a.id}
+            src={a.image}
+            alt=""
+            className="asteroids-rock"
+            style={{
+              left: a.x,
+              top: a.y,
+              width: ASTEROID_RADIUS * 2,
+              height: ASTEROID_RADIUS * 2,
+              transform: `translate(-50%, -50%) rotate(${a.rotation}deg)`,
+            }}
+          />
+        ))}
 
         {won && (
           <div className="asteroids-win-overlay">
@@ -206,7 +223,7 @@ function AsteroidsGame() {
       <aside className="asteroids-inventory content-box">
         <h2>Brendon Stueben</h2>
 
-        {collected.length === 0 && (
+        {world.collected.length === 0 && (
           <p>Blast the asteroids to collect info…</p>
         )}
 

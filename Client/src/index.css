@@ -803,27 +803,10 @@ a {
 
 .asteroids-rock {
   position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, var(--bg-raised) 0%, var(--bg-green-raised) 65%, var(--bg-green) 100%);
-  border: 1px solid var(--border-gold);
-  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.5);
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
   pointer-events: none;
   z-index: 1;
-}
-
-.asteroids-rock-label {
-  padding: 0 0.4rem;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  text-align: center;
-  color: var(--cream);
-  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
 
 .asteroids-win-overlay {
