@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 
 const BLOB_COUNT = 50
@@ -9,6 +10,8 @@ const TAIL_STREAK_COUNT = 9
 
 function CursorFluid() {
   const { theme } = useTheme()
+  const { pathname } = useLocation()
+  const isInfoMode = pathname === '/info'
   const blobRefs = useRef([])
   const tailStreakRefs = useRef([])
   const leadLineRef = useRef(null)
@@ -33,7 +36,7 @@ function CursorFluid() {
   }, [])
 
   useEffect(() => {
-    if (theme !== 'space') return
+    if (theme !== 'space' || isInfoMode) return
 
     function spawnDroplets(x, y, count) {
       const next = Array.from({ length: count }, () => {
@@ -144,9 +147,9 @@ function CursorFluid() {
       window.removeEventListener('mousemove', handleMove)
       cancelAnimationFrame(rafRef.current)
     }
-  }, [theme])
+  }, [theme, isInfoMode])
 
-  if (theme !== 'space') return null
+  if (theme !== 'space' || isInfoMode) return null
 
   return (
     <div className="cursor-fluid">
