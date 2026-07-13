@@ -23,10 +23,21 @@ function effectiveVolume(rawVolume) {
 function AmbientAudio({ showIntro = false }) {
   const { theme } = useTheme()
   const audioRef = useRef(null)
+  const controlRef = useRef(null)
   const [muted, setMuted] = useState(true)
   const [volume, setVolume] = useState(0.35)
+  const [showSlider, setShowSlider] = useState(false)
 
   const track = TRACKS[theme]
+
+  useEffect(() => {
+    if (!showSlider) return
+    function handleOutsideClick(e) {
+      if (controlRef.current && !controlRef.current.contains(e.target)) setShowSlider(false)
+    }
+    document.addEventListener('mousedown', handleOutsideClick)
+    return () => document.removeEventListener('mousedown', handleOutsideClick)
+  }, [showSlider])
 
   useEffect(() => {
     const audio = audioRef.current
@@ -47,6 +58,7 @@ function AmbientAudio({ showIntro = false }) {
     const audio = audioRef.current
     const next = !muted
     setMuted(next)
+    setShowSlider(true)
     if (audio) {
       audio.muted = next
       if (!next) audio.play().catch(() => {})
@@ -67,7 +79,7 @@ function AmbientAudio({ showIntro = false }) {
   }
 
   return (
-    <div className="audio-control">
+    <div className="audio-control" ref={controlRef}>
       <audio ref={audioRef} src={track} loop muted={muted} />
       {showIntro && (
         <div className="audio-hint">
@@ -80,18 +92,32 @@ function AmbientAudio({ showIntro = false }) {
         onClick={handleToggle}
         aria-label={muted ? 'Unmute ambient music' : 'Mute ambient music'}
       >
-        {muted ? '🔇' : '🔊'}
+        {muted ? (
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="3,9 3,15 7,15 12,20 12,4 7,9" />
+            <line x1="16" y1="9" x2="22" y2="15" />
+            <line x1="22" y1="9" x2="16" y2="15" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="3,9 3,15 7,15 12,20 12,4 7,9" />
+            <path d="M16 8a5 5 0 0 1 0 8" />
+            <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+          </svg>
+        )}
       </button>
-      <input
-        type="range"
-        className="audio-volume-slider"
-        min={0}
-        max={1}
-        step={0.01}
-        value={volume}
-        onChange={handleVolumeChange}
-        aria-label="Ambient volume"
-      />
+      {showSlider && (
+        <input
+          type="range"
+          className="audio-volume-slider"
+          min={0}
+          max={1}
+          step={0.01}
+          value={volume}
+          onChange={handleVolumeChange}
+          aria-label="Ambient volume"
+        />
+      )}
     </div>
   )
 }

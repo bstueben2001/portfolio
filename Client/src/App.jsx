@@ -57,7 +57,7 @@ function App() {
           <RestartButton />
         </div>
         <div className="ui-controls">
-          <ThemeDropdown showHint={introPhase === 'theme'} />
+          <ThemeDropdown />
         </div>
         <div className="app-content">
           <Routes>

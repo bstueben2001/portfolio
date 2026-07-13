@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { INFO_ITEMS } from '../data/infoItems'
+import StalwartWalkthrough from './StalwartWalkthrough'
 
 const ARROWS = ['up', 'down', 'left', 'right']
 const ARROW_GLYPHS = { up: '▲', down: '▼', left: '◀', right: '▶' }
@@ -164,6 +165,7 @@ function EmberRhythmGame() {
 
   return (
     <div className="asteroids-wrap">
+      <div className="game-stage" style={{ width: GAME_WIDTH, height: GAME_HEIGHT }}>
       <div
         className={`asteroids-game rhythm-game${world.feedback ? ` rhythm-game--${world.feedback}` : ''}`}
         style={{ width: GAME_WIDTH, height: GAME_HEIGHT }}
@@ -218,6 +220,7 @@ function EmberRhythmGame() {
           </div>
         )}
       </div>
+      </div>
 
       <aside className="asteroids-inventory content-box">
         <h2>Brendon Stueben</h2>
@@ -235,7 +238,11 @@ function EmberRhythmGame() {
             <h2>highlight projects</h2>
             {projects.map(item => (
               <h3 key={item.id}>
-                <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                {item.id === 'stalwart' ? (
+                  <StalwartWalkthrough label={item.label} />
+                ) : (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                )}
               </h3>
             ))}
           </>

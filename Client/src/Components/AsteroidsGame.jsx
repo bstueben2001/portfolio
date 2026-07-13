@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { INFO_ITEMS } from '../data/infoItems'
+import StalwartWalkthrough from './StalwartWalkthrough'
 import asteroid1 from '../assets/asteroid1.png'
 import asteroid2 from '../assets/asteroid2.png'
 import asteroid3 from '../assets/asteroid3.png'
@@ -147,7 +148,9 @@ function AsteroidsGame() {
 
   function pointerPos(e) {
     const rect = gameRef.current.getBoundingClientRect()
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top }
+    const scaleX = rect.width / GAME_WIDTH
+    const scaleY = rect.height / GAME_HEIGHT
+    return { x: (e.clientX - rect.left) / scaleX, y: (e.clientY - rect.top) / scaleY }
   }
 
   function handleMouseMove(e) {
@@ -178,6 +181,7 @@ function AsteroidsGame() {
 
   return (
     <div className="asteroids-wrap">
+      <div className="game-stage" style={{ width: GAME_WIDTH, height: GAME_HEIGHT }}>
       <div
         ref={gameRef}
         className="asteroids-game"
@@ -219,6 +223,7 @@ function AsteroidsGame() {
           </div>
         )}
       </div>
+      </div>
 
       <aside className="asteroids-inventory content-box">
         <h2>Brendon Stueben</h2>
@@ -236,7 +241,11 @@ function AsteroidsGame() {
             <h2>highlight projects</h2>
             {projects.map(item => (
               <h3 key={item.id}>
-                <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                {item.id === 'stalwart' ? (
+                  <StalwartWalkthrough label={item.label} />
+                ) : (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                )}
               </h3>
             ))}
           </>

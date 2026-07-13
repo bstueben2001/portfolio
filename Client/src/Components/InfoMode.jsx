@@ -1,4 +1,5 @@
 import { INFO_ITEM_MAP } from '../data/infoItems'
+import StalwartWalkthrough from './StalwartWalkthrough'
 
 function InfoMode() {
   const { email, phone, bio, stalwart, merge, alterego, github, linkedin, resume } = INFO_ITEM_MAP
@@ -14,9 +15,7 @@ function InfoMode() {
         <br/>
         <h2>highlight projects</h2>
         <h3>
-          <a href={stalwart.href} target="_blank" rel="noopener noreferrer">
-            {stalwart.label}
-          </a>
+          <StalwartWalkthrough label={stalwart.label} />
         </h3><h3>
           <a href={merge.href} target="_blank" rel="noopener noreferrer">
             {merge.label}

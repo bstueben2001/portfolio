@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { INFO_ITEMS } from '../data/infoItems'
+import StalwartWalkthrough from './StalwartWalkthrough'
 
 const CELL = 40
 const COLS = 16
@@ -134,6 +135,7 @@ function LightCycleGame() {
 
   return (
     <div className="asteroids-wrap">
+      <div className="game-stage" style={{ width: GAME_WIDTH, height: GAME_HEIGHT }}>
       <div
         className="asteroids-game cycle-game"
         style={{ width: GAME_WIDTH, height: GAME_HEIGHT }}
@@ -185,6 +187,7 @@ function LightCycleGame() {
           </div>
         )}
       </div>
+      </div>
 
       <aside className="asteroids-inventory content-box">
         <h2>Brendon Stueben</h2>
@@ -202,7 +205,11 @@ function LightCycleGame() {
             <h2>highlight projects</h2>
             {projects.map(item => (
               <h3 key={item.id}>
-                <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                {item.id === 'stalwart' ? (
+                  <StalwartWalkthrough label={item.label} />
+                ) : (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                )}
               </h3>
             ))}
           </>

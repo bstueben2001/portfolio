@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { INFO_ITEMS } from '../data/infoItems'
+import StalwartWalkthrough from './StalwartWalkthrough'
 import shipImg from '../assets/hailMary-ship.png'
 import hookImg from '../assets/phmCollectionBall.png'
 import taumoebaImg from '../assets/taumoeba.png'
@@ -103,7 +104,9 @@ function FishingGame() {
 
   const handleMouseMove = useCallback((e) => {
     const rect = gameRef.current.getBoundingClientRect()
-    const { x, y } = clampToPool(e.clientX - rect.left, e.clientY - rect.top, HOOK_RADIUS)
+    const scaleX = rect.width / GAME_WIDTH
+    const scaleY = rect.height / GAME_HEIGHT
+    const { x, y } = clampToPool((e.clientX - rect.left) / scaleX, (e.clientY - rect.top) / scaleY, HOOK_RADIUS)
     setWorld(prev => ({ ...prev, target: { x, y } }))
   }, [])
 
@@ -211,6 +214,7 @@ function FishingGame() {
 
   return (
     <div className="asteroids-wrap">
+      <div className="game-stage" style={{ width: GAME_WIDTH, height: GAME_HEIGHT }}>
       <div
         ref={gameRef}
         className="asteroids-game fishing-game"
@@ -264,6 +268,7 @@ function FishingGame() {
           </div>
         )}
       </div>
+      </div>
 
       <aside className="asteroids-inventory content-box">
         <h2>Brendon Stueben</h2>
@@ -281,7 +286,11 @@ function FishingGame() {
             <h2>highlight projects</h2>
             {projects.map(item => (
               <h3 key={item.id}>
-                <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                {item.id === 'stalwart' ? (
+                  <StalwartWalkthrough label={item.label} />
+                ) : (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                )}
               </h3>
             ))}
           </>
